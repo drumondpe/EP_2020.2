@@ -102,3 +102,39 @@ def jogo():
         vencedor_aposta = input('Em quem você aposta? (jogador/banco/empate) ') #aposta em quem será o vencedor da rodada
         vencedor_aposta = vencedor_aposta.lower()
 
+        ###################### BARALHO #########################
+
+        #BARALHO = [cartas]
+        cartas = [] #possuirá as cartas A - K
+        naipes = ['Copas', 'Ouros', 'Paus', 'Espadas']
+        realeza = ['J', 'Q', 'K', 'A']
+        baralho = []
+
+        for i in range(2, 11):
+            cartas.append(str(i)) #adiciona numeros de 2-10, convertendo-os para strings
+        
+        for j in range(4):
+            cartas.append(realeza[j]) #vai colocar as cartas de realeza na lista de cartas
+
+        for p in range(4):
+            for m in range (13):
+                carta = (cartas[m] + ' de ' + naipes[p]) #passa por todas as cartas 4x que irão receber os 4 naipes
+                baralho.append(carta)
+
+        random.shuffle(baralho) #embaralha o baralho
+
+        dic_valores_cartas = { #valores das cartas
+            'A ' : 1,
+            '2 ' : 2,
+            '3 ' : 3,
+            '4 ' : 4,
+            '5 ' : 5,
+            '6 ' : 6,
+            '7 ' : 7,
+            '8 ' : 8,
+            '9 ' : 9,
+            '10' : 0,
+            'J ' : 0,
+            'Q ' : 0,
+            'K ' : 0
+            }
