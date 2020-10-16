@@ -16,5 +16,13 @@ def jogo():
     quantidade_suficiente = True
     outra_carta = False
 
+    ############ Funções ############ 
 
+    def verifica_necessidade(soma_jogador, soma_banco, outra_carta):
+        if soma_jogador < 8:
+            outra_carta = True
+                
+        if soma_banco < 8:
+            outra_carta = True
+        return outra_carta
 
