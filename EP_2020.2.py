@@ -83,3 +83,22 @@ def jogo():
             fichas -= valor_aposta
                 
         return fichas
+
+    ############ While ############ 
+
+    resposta = input('Você quer jogar (sim/não)? ') #pergunta ao jogador se ele quer jogar
+    resposta = resposta.lower()
+    if resposta == 'não': #se a resposta for 'não', deve parar o jogo
+        jogando = False
+
+    while(jogando): #começa o loop do jogo
+        print('Você começou a jogar!')  
+        print('Você tem {} fichas'.format(fichas))
+
+        valor_aposta = int(input('Quanto você deseja apostar? (você possui {} fichas) '.format(fichas))) #aposta a quantia de fichas
+        if valor_aposta > fichas:
+            valor_aposta = int(input('Você apostou uma quantia que não possui. Quanto você deseja apostar? (você possui {} fichas) '.format(fichas)))
+
+        vencedor_aposta = input('Em quem você aposta? (jogador/banco/empate) ') #aposta em quem será o vencedor da rodada
+        vencedor_aposta = vencedor_aposta.lower()
+
