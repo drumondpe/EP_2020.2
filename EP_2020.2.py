@@ -138,3 +138,23 @@ def jogo():
             'Q ' : 0,
             'K ' : 0
             }
+
+        carta_jogador_1 = baralho[0] #distribui as cartas para os jogadores
+        carta_jogador_2 = baralho[1]
+        carta_banco_1 = baralho[2]
+        carta_banco_2 = baralho[3]
+
+        cartas_distribuidas = [carta_jogador_1, carta_jogador_2, carta_banco_1, carta_banco_2] #faz uma lista com as cartas distribuidas
+        valores_cartas_distribuidas = []
+        
+        for distribuidas in cartas_distribuidas: #atribui os valores das cartas 
+            fatiamento = distribuidas[0:2]
+            valor_carta_jogador = dic_valores_cartas[fatiamento]
+            valores_cartas_distribuidas.append(valor_carta_jogador) #faz uma lista com as cartas distribuidas e seus respectivos valores
+
+        soma_jogador = valores_cartas_distribuidas[0] + valores_cartas_distribuidas[1] #soma a pontuação do jogador
+        soma_banco = valores_cartas_distribuidas[2] + valores_cartas_distribuidas[3] #soma a pontuação do banco
+
+        print('As cartas do jogador são: {0} e {1} '.format(baralho[0], baralho[1]))
+        print('as cartas do banco são: {0} e {1} '.format(baralho[2], baralho[3]))
+        print('a soma do jogador deu {} e a do banco {} '.format(soma_jogador, soma_banco))
