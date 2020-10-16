@@ -47,3 +47,39 @@ def jogo():
 
         return soma_jogador, soma_banco
 
+    def verifica_vencedor(soma_jogador, soma_banco): #rever pois deve ser quem chagar mais perto de 9
+
+        if soma_jogador > soma_banco:
+            vencedor_jogo = 'jogador'                                                     
+
+        elif soma_banco > soma_jogador:
+            vencedor_jogo = 'banco'
+
+        else:
+            vencedor_jogo = 'empate'
+
+        return vencedor_jogo
+
+
+
+    def paga_aposta(vencedor_jogo, fichas):
+                
+        if vencedor_jogo == vencedor_aposta: #jogador acertou quem ganhou
+
+            if vencedor_jogo == 'jogador': #paga quantia de jogador
+                fichas += valor_aposta
+                    
+            elif vencedor_jogo == 'banco': #paga quantia de banco
+                paga_banco = valor_aposta * 0.95
+                arredonda = floor(paga_banco) #arredonda para baixo
+                fichas += arredonda
+                    
+            elif vencedor_jogo == 'empate': #paga quantia de empate
+                fichas += valor_aposta * 8
+
+
+        else:
+            #perde o que apostou
+            fichas -= valor_aposta
+                
+        return fichas
