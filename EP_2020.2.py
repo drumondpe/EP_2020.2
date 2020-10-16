@@ -158,3 +158,19 @@ def jogo():
         print('As cartas do jogador são: {0} e {1} '.format(baralho[0], baralho[1]))
         print('as cartas do banco são: {0} e {1} '.format(baralho[2], baralho[3]))
         print('a soma do jogador deu {} e a do banco {} '.format(soma_jogador, soma_banco))
+
+############ Executa funções ############ 
+      
+        outra_carta = verifica_necessidade(soma_jogador, soma_banco, outra_carta) #verifica se é necessário distribuir mais uma carta
+        
+        nova_soma_jogador, nova_soma_banco = distribui_mais_carta(soma_jogador, soma_banco, outra_carta) #retorna as novas somas, não ocorre se outra carta for False
+
+        real_vencedor = verifica_vencedor(nova_soma_jogador, nova_soma_banco) #retorna o vencedor
+
+        fichas = paga_aposta(real_vencedor, fichas)
+
+        print (fichas)
+
+
+
+jogo()
