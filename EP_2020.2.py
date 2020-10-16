@@ -3,15 +3,8 @@
 # Projeto EP - Insper 2020.2
 # Pedro Gomes de Sá Drumond - 1B.2
 
-# -*- coding: utf-8 -*-
 
-# Projeto EP - Insper 2020.2
-# Pedro Gomes de Sá Drumond - 1B.2
-
-#FALTA FAZER:
-#
-
-import ramdom
+import random
 import math
 from math import floor
 
@@ -21,6 +14,81 @@ def jogo():
 
     jogando = True
     quantidade_suficiente = True
+    outra_carta = False
+
+    ############ Funções ############ 
+
+    def verifica_necessidade(soma_jogador, soma_banco, outra_carta):
+        if soma_jogador < 8:
+            outra_carta = True
+                
+        if soma_banco < 8:
+            outra_carta = True
+        return outra_carta
+
+
+    def distribui_mais_carta(soma_jogador, soma_banco, outra_carta): #distribui mais uma carta caso não alcance 5
+        if soma_jogador <= 5:
+            #distribui mais uma carta para o jogador
+            carta_jogador_3 = baralho[4]
+            fatia = carta_jogador_3[0:2]
+            valor_carta_jogador_3 = dic_valores_cartas[fatia] #atribui o valor da carta buscando no dic lá de cima
+            soma_jogador += valor_carta_jogador_3 #recalcula a nova soma p/ jogador
+            print('O jogador recebeu a carta {} '.format(baralho[4]))
+            print('A somatória do jogador deu: {}'.format(soma_jogador))
+
+        if soma_banco <= 5:
+            #distribui mais uma carta para o banco
+            carta_banco_3 = baralho[5]
+            fatib = carta_banco_3[0:2]
+            valor_carta_banco_3 = dic_valores_cartas[fatib] #atribui o valor da carta buscando no dic lá de cima
+            soma_banco += valor_carta_banco_3 #recalcula a nova soma p/ banco
+            print('O banco recebeu a carta {} '.format(baralho[5]))
+            print('A somatória do banco deu: {}'.format(soma_banco))
+
+        return soma_jogador, soma_banco
+
+
+
+    def verifica_vencedor(soma_jogador, soma_banco): #rever pois deve ser quem chagar mais perto de 9
+
+        if soma_jogador > soma_banco:
+            vencedor_jogo = 'jogador'                                                     
+
+        elif soma_banco > soma_jogador:
+            vencedor_jogo = 'banco'
+
+        else:
+            vencedor_jogo = 'empate'
+
+        return vencedor_jogo
+
+
+
+    def paga_aposta(vencedor_jogo, fichas):
+                
+        if vencedor_jogo == vencedor_aposta: #jogador acertou quem ganhou
+
+            if vencedor_jogo == 'jogador': #paga quantia de jogador
+                fichas += valor_aposta
+                    
+            elif vencedor_jogo == 'banco': #paga quantia de banco
+                paga_banco = valor_aposta * 0.95
+                arredonda = floor(paga_banco) #arredonda para baixo
+                fichas += arredonda
+                    
+            elif vencedor_jogo == 'empate': #paga quantia de empate
+                fichas += valor_aposta * 8
+
+
+        else:
+            #perde o que apostou
+            fichas -= valor_aposta
+                
+        return fichas
+
+
+############ While ############ 
 
     resposta = input('Você quer jogar (sim/não)? ') #pergunta ao jogador se ele quer jogar
     resposta = resposta.lower()
@@ -31,11 +99,11 @@ def jogo():
         print('Você começou a jogar!')  
         print('Você tem {} fichas'.format(fichas))
 
-        valor_aposta = int(input('Quanto você deseja apostar? (você possui {} fichas)'.format(fichas))) #aposta a quantia de fichas
+        valor_aposta = int(input('Quanto você deseja apostar? (você possui {} fichas) '.format(fichas))) #aposta a quantia de fichas
         if valor_aposta > fichas:
-            valor_aposta = int(input('Você apostou uma quantia que não possui. Quanto você deseja apostar? (você possui {} fichas)'.format(fichas)))
+            valor_aposta = int(input('Você apostou uma quantia que não possui. Quanto você deseja apostar? (você possui {} fichas) '.format(fichas)))
 
-        vencedor_aposta = input('Em quem você aposta? (jogador/banco/empate') #aposta em quem será o vencedor da rodada
+        vencedor_aposta = input('Em quem você aposta? (jogador/banco/empate) ') #aposta em quem será o vencedor da rodada
         vencedor_aposta = vencedor_aposta.lower()
 
         ###################### BARALHO #########################
@@ -46,7 +114,7 @@ def jogo():
         realeza = ['J', 'Q', 'K', 'A']
         baralho = []
 
-        for i in range(2, 11): #talvez mudar para 1
+        for i in range(2, 11):
             cartas.append(str(i)) #adiciona numeros de 2-10, convertendo-os para strings
         
         for j in range(4):
@@ -54,12 +122,10 @@ def jogo():
 
         for p in range(4):
             for m in range (13):
-                carta = (cartas[m] + 'de' + naipes[p]) #passa por todas as cartas 4x que irão receber os 4 naipes
+                carta = (cartas[m] + ' de ' + naipes[p]) #passa por todas as cartas 4x que irão receber os 4 naipes
                 baralho.append(carta)
 
-        random.shuffle(baralho) #embaralha as o baralho
-
-        ############## BARALHO #############
+        random.shuffle(baralho) #embaralha o baralho
 
         dic_valores_cartas = { #valores das cartas
             'A ' : 1,
@@ -93,56 +159,25 @@ def jogo():
         soma_jogador = valores_cartas_distribuidas[0] + valores_cartas_distribuidas[1] #soma a pontuação do jogador
         soma_banco = valores_cartas_distribuidas[2] + valores_cartas_distribuidas[3] #soma a pontuação do banco
 
+        print('As cartas do jogador são: {0} e {1} '.format(baralho[0], baralho[1]))
+        print('as cartas do banco são: {0} e {1} '.format(baralho[2], baralho[3]))
+        print('a soma do jogador deu {} e a do banco {} '.format(soma_jogador, soma_banco))
 
-        ############ VERIFICAÇÕES ############
+############ Executa funções ############ 
+      
+        outra_carta = verifica_necessidade(soma_jogador, soma_banco, outra_carta) #verifica se é necessário distribuir mais uma carta
         
-        ####### Soma deu 8 ou 9
-        if soma_jogador == 8 or soma_jogador == 9 or soma_banco == 8 or soma_jogador == 9: #verifica se alguém venceu
-            #jogo termina e as apostas são pagas
-            if vencedor_aposta == 'jogador' and soma_jogador == 8 or soma_jogador == 9:
-                #paga vencedor aposta
-                fichas += valor_aposta
-            
-            elif vencedor_aposta == 'banco' and soma_banco == 8 or soma_banco == 9:
-                #paga banco aposta
-                paga_banco = valor_aposta * 0.95
-                arredonda = floor(paga_banco) #arredonda para baixo
-                fichas += arredonda
+        nova_soma_jogador, nova_soma_banco = distribui_mais_carta(soma_jogador, soma_banco, outra_carta) #retorna as novas somas, não ocorre se outra carta for False
 
-            elif vencedor_aposta == 'empate' and soma_banco == 8 and soma_jogador == 8 or vencedor_aposta == 'empate' and soma_banco == 9 and soma_jogador == 9 or vencedor_aposta == 'empate' and soma_banco == 9 and soma_jogador == 8 or vencedor_aposta == 'empate' and soma_banco == 8 and soma_jogador == 9 or
-                #paga o empate
-                #####o empate conta como 9 e 8?
-                fichas += valor_aposta * 8
+        real_vencedor = verifica_vencedor(nova_soma_jogador, nova_soma_banco) #retorna o vencedor
 
-            else:
-                #perde o que apostou
-                fichas -= valor_aposta
+        fichas = paga_aposta(real_vencedor, fichas)
 
-        ####### Soma deu 6 ou 7
-        if soma_jogador == 6 or soma_jogador == 7:
-            soma_jogador = soma_jogador
+        print (fichas)
 
 
-        if soma_banco == 6 or soma_banco == 7:                  #if em tudo pois tem que verificar todas as entradas
-            soma_jogador = soma_jogador                         #verificar se if e elif estão sendo usados corretamente
 
-        #como continuar a partir daqui também!
-
-        ####### Soma deu menor ou igual a 5
-        if soma_jogador <= 5:
-            #distribui mais uma carta para o jogador
-            carta_jogador_3 = baralho[4]
-            fatia = carta_jogador_3[0:2]
-            valor_carta_jogador_3 = dic_valores_cartas[fatia] #atribui o valor da carta buscando no dic lá de cima
-            soma_jogador += valor_carta_jogador_3 #recalcula a nova soma p/ jogador
+jogo()
 
 
-        if soma_banco <= 5:
-            #distribui mais uma carta para o banco
-            carta_banco_3 = baralho[5]
-            fatib = carta_banco_3[0:2]
-            valor_carta_banco_3 = dic_valores_cartas[fatib] #atribui o valor da carta buscando no dic lá de cima
-            soma_banco += valor_carta_banco_3 #recalcula a nova soma p/ banco
 
-
-        ### Como continuar com esses dois ifs? tem que juntar de algum jeito?
