@@ -10,7 +10,7 @@ from math import floor
 
 def jogo():
     
-    fichas = 100 
+    fichas = 1000 
 
     jogando = True
     quantidade_suficiente = True
@@ -73,18 +73,15 @@ def jogo():
 
         if soma_jogador > soma_banco:
             vencedor_jogo = 'jogador'
-            print('O jogador venceu! ')
-            print('Você ganhou {} fichas!'.format(valor_aposta - valor_aposta * 0.0124))                                                    
+            print('O jogador venceu! ')                                                 
 
         elif soma_banco > soma_jogador:
             vencedor_jogo = 'banco'
             print('O banco venceu! ')
-            print('Você ganhou {} fichas!'.format(arredonda - arredonda * 0.0106))     
 
         else:
             vencedor_jogo = 'empate'
             print('Deu empate! ')
-            print('Você ganhou {} fichas!'.format(valor_aposta * 8 + valor_aposta * 0.1436))  
 
         return vencedor_jogo
 
