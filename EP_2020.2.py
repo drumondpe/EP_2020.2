@@ -27,44 +27,44 @@ def jogo():
         return outra_carta
 
     def distribui_mais_carta(soma_jogador, soma_banco, outra_carta): #distribui mais uma carta caso não alcance 5
-        if soma_jogador <= 5 or soma_jogador > 9:
-            if soma_jogador > 9:
-                soma_jogador = soma_jogador - 10
-                #distribui mais uma carta para o jogador
-                carta_jogador_3 = baralho[4]
-                fatia = carta_jogador_3[0:2]
-                valor_carta_jogador_3 = dic_valores_cartas[fatia] #atribui o valor da carta buscando no dic lá de cima
-                soma_jogador += valor_carta_jogador_3 #recalcula a nova soma p/ jogador
-                print('O jogador recebeu a carta {} '.format(baralho[4]))
-                print('A somatória do jogador deu: {}'.format(soma_jogador))
-            else:
-                #distribui mais uma carta para o jogador
-                carta_jogador_3 = baralho[4]
-                fatia = carta_jogador_3[0:2]
-                valor_carta_jogador_3 = dic_valores_cartas[fatia] #atribui o valor da carta buscando no dic lá de cima
-                soma_jogador += valor_carta_jogador_3 #recalcula a nova soma p/ jogador
-                print('O jogador recebeu a carta {} '.format(baralho[4]))
-                print('A somatória do jogador deu: {}'.format(soma_jogador))
+        if soma_jogador <= 5:
+            #distribui mais uma carta para o jogador
+            carta_jogador_3 = baralho[4]
+            fatia = carta_jogador_3[0:2]
+            valor_carta_jogador_3 = dic_valores_cartas[fatia] #atribui o valor da carta buscando no dic lá de cima
+            soma_jogador += valor_carta_jogador_3 #recalcula a nova soma p/ jogador
+            print('O jogador recebeu a carta {} '.format(baralho[4]))
+            print('A somatória do jogador deu: {}'.format(soma_jogador))
 
+        elif soma_jogador > 9:
+            soma_jogador -= 10
+            #distribui mais uma carta para o jogador
+            carta_jogador_3 = baralho[4]
+            fatia = carta_jogador_3[0:2]
+            valor_carta_jogador_3 = dic_valores_cartas[fatia] #atribui o valor da carta buscando no dic lá de cima
+            soma_jogador += valor_carta_jogador_3 #recalcula a nova soma p/ jogador
+            print('O jogador recebeu a carta {} '.format(baralho[4]))
+            print('A somatória do jogador deu: {}'.format(soma_jogador))
+            
 
-        if soma_banco <= 5 or soma_banco > 9:
-            if soma_banco > 9:
-                soma_banco = soma_banco - 10
-                #distribui mais uma carta para o banco
-                carta_banco_3 = baralho[5]
-                fatib = carta_banco_3[0:2]
-                valor_carta_banco_3 = dic_valores_cartas[fatib] #atribui o valor da carta buscando no dic lá de cima
-                soma_banco += valor_carta_banco_3 #recalcula a nova soma p/ banco
-                print('O banco recebeu a carta {} '.format(baralho[5]))
-                print('A somatória do banco deu: {}'.format(soma_banco))
-            else:
-                #distribui mais uma carta para o banco
-                carta_banco_3 = baralho[5]
-                fatib = carta_banco_3[0:2]
-                valor_carta_banco_3 = dic_valores_cartas[fatib] #atribui o valor da carta buscando no dic lá de cima
-                soma_banco += valor_carta_banco_3 #recalcula a nova soma p/ banco
-                print('O banco recebeu a carta {} '.format(baralho[5]))
-                print('A somatória do banco deu: {}'.format(soma_banco))
+        if soma_banco <= 5:
+            #distribui mais uma carta para o banco
+            carta_banco_3 = baralho[5]
+            fatib = carta_banco_3[0:2]
+            valor_carta_banco_3 = dic_valores_cartas[fatib] #atribui o valor da carta buscando no dic lá de cima
+            soma_banco += valor_carta_banco_3 #recalcula a nova soma p/ banco
+            print('O banco recebeu a carta {} '.format(baralho[5]))
+            print('A somatória do banco deu: {}'.format(soma_banco))
+            
+        elif soma_banco > 9:
+            soma_banco -= 10
+            #distribui mais uma carta para o banco
+            carta_banco_3 = baralho[5]
+            fatib = carta_banco_3[0:2]
+            valor_carta_banco_3 = dic_valores_cartas[fatib] #atribui o valor da carta buscando no dic lá de cima
+            soma_banco += valor_carta_banco_3 #recalcula a nova soma p/ banco
+            print('O banco recebeu a carta {} '.format(baralho[5]))
+            print('A somatória do banco deu: {}'.format(soma_banco))
 
 
         return soma_jogador, soma_banco
@@ -73,15 +73,18 @@ def jogo():
 
         if soma_jogador > soma_banco:
             vencedor_jogo = 'jogador'
-            print('O jogador venceu! ')                                                    
+            print('O jogador venceu! ')
+            print('Você ganhou {} fichas!'.format(valor_aposta - valor_aposta * 0.0124))                                                    
 
         elif soma_banco > soma_jogador:
             vencedor_jogo = 'banco'
             print('O banco venceu! ')
+            print('Você ganhou {} fichas!'.format(arredonda - arredonda * 0.0106))     
 
         else:
             vencedor_jogo = 'empate'
             print('Deu empate! ')
+            print('Você ganhou {} fichas!'.format(valor_aposta * 8 + valor_aposta * 0.1436))  
 
         return vencedor_jogo
 
@@ -93,14 +96,20 @@ def jogo():
 
             if vencedor_jogo == 'jogador': #paga quantia de jogador
                 fichas += valor_aposta
+                fichas -= valor_aposta * 0.0124 #comissão da casa
+                fichas = floor(fichas)
                     
             elif vencedor_jogo == 'banco': #paga quantia de banco
                 paga_banco = valor_aposta * 0.95
                 arredonda = floor(paga_banco) #arredonda para baixo
                 fichas += arredonda
+                fichas -= arredonda * 0.0106 #comissão casa
+                fichas = floor(fichas)
                     
             elif vencedor_jogo == 'empate': #paga quantia de empate
                 fichas += valor_aposta * 8
+                fichas -= valor_aposta * 0.1436 #comissão da casa
+                fichas = floor(fichas)
 
 
         else:
@@ -195,7 +204,7 @@ def jogo():
 
         fichas = paga_aposta(real_vencedor, fichas)
 
-        print (fichas)
+        #print (fichas)
 
 
 
